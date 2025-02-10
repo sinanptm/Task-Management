@@ -12,9 +12,9 @@ export enum Status {
 
 export default interface ITask {
   readonly _id?: string;
-  readonly name?: string;
-  readonly priority?: Priority;
-  readonly status?: Status;
+  name?: string;
+  priority?: Priority;
+  status?: Status;
   readonly createdAt?: string | Date;
   readonly updatedAt?: string | Date;
 }
