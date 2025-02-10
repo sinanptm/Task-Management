@@ -1,0 +1,20 @@
+{
+  "name": "task-management",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+  },
+  "author": {
+    "name": "Muhammed sinan - sinanptm",
+    "url": "https://github.com/sinanptm"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
