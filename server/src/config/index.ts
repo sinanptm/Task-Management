@@ -2,10 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const {
-    PORT
+    PORT,
+    MONGO_URI
 } = process.env;
 
 
 export {
-    PORT
+    PORT,
+    MONGO_URI
 }
