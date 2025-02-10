@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { validateTask } from "../utils/validateTask";
-import Task from "../model/Task";
+import CustomError from "../types/CustomError";
 import { StatusCode } from "../types";
+import Task from "../model/Task";
 
 const createTaskController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -9,8 +10,7 @@ const createTaskController = async (req: Request, res: Response, next: NextFunct
 
         const validationError = validateTask({ fields: { name, priority, status } });
         if (validationError) {
-            res.status(StatusCode.BadRequest).json({ message: validationError });
-            return;
+            throw new CustomError(validationError, StatusCode.BadRequest)
         }
 
         const task = await Task.create({ name, priority, status });

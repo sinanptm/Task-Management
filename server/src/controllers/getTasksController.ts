@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import Task from "../model/Task";
 import { StatusCode } from "../types";
+import Task from "../model/Task";
 
 const getTaskController = async (req: Request, res: Response, next: NextFunction) => {
     try {

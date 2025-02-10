@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import CustomError from "../types/CustomError";
 import { isValidObjectId } from "mongoose";
-import Task from "../model/Task";
 import { StatusCode } from "../types";
+import Task from "../model/Task";
 
 const deleteTaskController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -9,8 +10,7 @@ const deleteTaskController = async (req: Request, res: Response, next: NextFunct
 
         const validationError = await validate(taskId);
         if (validationError) {
-            res.status(StatusCode.BadRequest).json({ message: validationError });
-            return;
+            throw new CustomError(validationError, StatusCode.BadRequest)
         }
 
         await Task.findByIdAndDelete(taskId);

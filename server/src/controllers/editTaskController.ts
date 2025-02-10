@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import Task from "../model/Task";
-import { isValidObjectId } from "mongoose";
 import { validateTask } from "../utils/validateTask";
+import CustomError from "../types/CustomError";
+import { isValidObjectId } from "mongoose";
 import { StatusCode } from "../types";
+import Task from "../model/Task";
 
 const editTaskController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -10,8 +11,7 @@ const editTaskController = async (req: Request, res: Response, next: NextFunctio
         const { name, priority, status } = req.body;
 
         if (!isValidObjectId(id)) {
-            res.status(StatusCode.BadRequest).json({ message: "Invalid task ID" });
-            return;
+            throw new CustomError("Invalid task ID", StatusCode.BadRequest)
         }
 
         const validationError = validateTask({
@@ -20,14 +20,12 @@ const editTaskController = async (req: Request, res: Response, next: NextFunctio
         });
 
         if (validationError) {
-            res.status(StatusCode.BadRequest).json({ message: validationError });
-            return;
+            throw new CustomError(validationError, StatusCode.BadRequest)
         }
 
         const task = await Task.findById(id);
         if (!task) {
-            res.status(StatusCode.NotFound).json({ message: "Tasks not found" });
-            return;
+            throw new CustomError("Tasks not found" , StatusCode.NotFound)
         }
 
         task.name = name || task.name;
