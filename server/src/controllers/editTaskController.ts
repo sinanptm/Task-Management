@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Task from "../model/Task";
 import { isValidObjectId } from "mongoose";
 import { validateTask } from "../utils/validateTask";
+import { StatusCode } from "../types";
 
 const editTaskController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -9,7 +10,7 @@ const editTaskController = async (req: Request, res: Response, next: NextFunctio
         const { name, priority, status } = req.body;
 
         if (!isValidObjectId(id)) {
-            res.status(400).json({ message: "Invalid task ID" });
+            res.status(StatusCode.BadRequest).json({ message: "Invalid task ID" });
             return;
         }
 
@@ -19,13 +20,13 @@ const editTaskController = async (req: Request, res: Response, next: NextFunctio
         });
 
         if (validationError) {
-            res.status(400).json({ message: validationError });
+            res.status(StatusCode.BadRequest).json({ message: validationError });
             return;
         }
 
         const task = await Task.findById(id);
         if (!task) {
-            res.status(404).json({ message: "Tasks not found" });
+            res.status(StatusCode.NotFound).json({ message: "Tasks not found" });
             return;
         }
 
@@ -34,7 +35,7 @@ const editTaskController = async (req: Request, res: Response, next: NextFunctio
         task.status = status || task.status;
         await task.save();
 
-        res.status(200).json({ message: "Task updated successfully", task });
+        res.status(StatusCode.Success).json({ message: "Task updated successfully", task });
     } catch (error) {
         next(error);
     }
