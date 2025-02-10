@@ -13,6 +13,7 @@ const useGetTasks = () => {
             try {
                 setLoading(true);
                 const fetchedTasks = await getTasks();
+                                
                 setTasks(fetchedTasks);
             } catch (error: any) {
                 setError(error.response?.data?.message || "Unknown error occurred");
