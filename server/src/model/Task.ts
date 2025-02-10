@@ -1,5 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-import ITask from "../interface/ITask";
+import ITask, { Priority, Status } from "../interface/ITask";
 
 const taskSchema = new Schema<ITask & Document>(
   {
@@ -9,12 +9,12 @@ const taskSchema = new Schema<ITask & Document>(
     },
     priority: {
       type: String,
-      enum: ["Low", "Medium", "High"],
+      enum: Object.values(Priority),
       required: true,
     },
     status: {
       type: String,
-      enum: ["To Do", "In Progress", "Completed"],
+      enum: Object.values(Status),
       default: "To Do",
     }
   },
