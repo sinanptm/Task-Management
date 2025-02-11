@@ -63,67 +63,78 @@ const App = () => {
     [setTasks, tasks, editingTask],
   );
 
-  if (isLoading) return <div className="flex justify-center items-center h-screen">Loading tasks...</div>;
-  if (error) return <div className="flex justify-center items-center h-screen text-red-500">Error: {error}</div>;
+  const renderTaskList = useCallback(() => {
+    if (isLoading) {
+      return <div className="text-center py-8 text-muted-foreground">Loading tasks...</div>;
+    }
+
+    if (error) {
+      return <div className="text-center py-8 text-red-500">Error loading tasks: {error}</div>;
+    }
+
+    if (tasks.length === 0) {
+      return <div className="text-center py-8 text-muted-foreground">No tasks yet. Click 'Add Task' to create one.</div>;
+    }
+
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {tasks.map((task) => (
+          <Card key={task._id} className="flex flex-col">
+            <CardContent className="flex-grow p-4">
+              <h3 className="text-lg font-semibold mb-2">{task.name}</h3>
+              <div className="flex justify-between items-center mb-2">
+                <Badge
+                  variant={
+                    task.priority === Priority.High
+                      ? "destructive"
+                      : task.priority === Priority.Medium
+                        ? "default"
+                        : "secondary"
+                  }
+                >
+                  {task.priority}
+                </Badge>
+                <Badge
+                  variant={
+                    task.status === Status.Completed
+                      ? "success"
+                      : task.status === Status.InProgress
+                        ? "warning"
+                        : "default"
+                  }
+                >
+                  {task.status}
+                </Badge>
+              </div>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Calendar className="mr-2 h-4 w-4" />
+                {new Date(task.createdAt!).toLocaleDateString()}
+              </div>
+            </CardContent>
+            <Separator />
+            <CardFooter className="flex justify-end space-x-2 p-4">
+              <Button variant="outline" size="sm" onClick={() => handleEdit(task)}>
+                <Pencil className="h-4 w-4 mr-2" /> Edit
+              </Button>
+              <Button variant="destructive" size="sm" onClick={() => setDeleteTaskId(task._id!)}>
+                <Trash2 className="h-4 w-4 mr-2" /> Delete
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    );
+  }, [handleEdit, tasks, isLoading, error]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 ">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Task Manager</h1>
         <Button onClick={handleAddTask} size="sm">
           <Plus className="mr-2 h-4 w-4" /> Add Task
         </Button>
       </div>
-      {tasks.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">No tasks yet. Click 'Add Task' to create one.</div>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => (
-            <Card key={task._id} className="flex flex-col">
-              <CardContent className="flex-grow p-4">
-                <h3 className="text-lg font-semibold mb-2">{task.name}</h3>
-                <div className="flex justify-between items-center mb-2">
-                  <Badge
-                    variant={
-                      task.priority === Priority.High
-                        ? "destructive"
-                        : task.priority === Priority.Medium
-                          ? "default"
-                          : "secondary"
-                    }
-                  >
-                    {task.priority}
-                  </Badge>
-                  <Badge
-                    variant={
-                      task.status === Status.Completed
-                        ? "success"
-                        : task.status === Status.InProgress
-                          ? "warning"
-                          : "default"
-                    }
-                  >
-                    {task.status}
-                  </Badge>
-                </div>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  {new Date(task.createdAt!).toLocaleDateString()}
-                </div>
-              </CardContent>
-              <Separator />
-              <CardFooter className="flex justify-end space-x-2 p-4">
-                <Button variant="outline" size="sm" onClick={() => handleEdit(task)}>
-                  <Pencil className="h-4 w-4 mr-2" /> Edit
-                </Button>
-                <Button variant="destructive" size="sm" onClick={() => setDeleteTaskId(task._id!)}>
-                  <Trash2 className="h-4 w-4 mr-2" /> Delete
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
+      {renderTaskList()}
       {isDialogOpen && (
         <DialogForm
           isOpen={isDialogOpen}
