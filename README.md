@@ -1,82 +1,103 @@
-# Task Management System
+# 📋 Task Management System
 
-A full-stack task management application built with React, TypeScript, Node.js, and MongoDB. The system allows users to create, read, update, and delete tasks with different priorities and statuses.
+A modern, full-stack task management application built with React, TypeScript, Node.js, and MongoDB. Streamline your workflow with an intuitive interface for creating, organizing, and tracking tasks.
 
-## Live Demo
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
-- Frontend: [https://task-management-sinanptms.vercel.app/](https://task-management-sinanptms.vercel.app/)
-- Backend API: [https://task.avm-ayurvedic.online/tasks](https://task.avm-ayurvedic.online/tasks)
+## 🚀 Live Demo
 
-## Features
+- ✨ Frontend: [task-management-sinanptms.vercel.app](https://task-management-sinanptms.vercel.app/)
+- 🔌 Backend API: [task.avm-ayurvedic.online/tasks](https://task.avm-ayurvedic.online/tasks)
 
-- Create, read, update, and delete tasks
-- Filter tasks by name, priority, and status
-- Responsive design using ShadCN UI components
-- Confirmation modal for deletion
-- Task prioritization (Low, Medium, High)
-- Task status tracking (To Do, In Progress, Completed)
+## ✨ Key Features
 
-## Tech Stack
+- 📝 Intuitive task creation and management
+- 🔍 Advanced filtering by name, priority, and status
+- 📱 Responsive design with ShadCN UI components
+- 🔒 Confirmation modals for critical actions
+- 🎯 Priority levels (Low, Medium, High)
+- 📊 Status tracking (To Do, In Progress, Completed)
+- 🎨 Modern and clean user interface
 
-### Frontend
-- React with TypeScript
-- Vite for build tooling
-- ShadCN UI for components
-- React Hook Form with Zod validation
-- Axios for API requests
-- TailwindCSS for styling
+## 🛠️ Tech Stack
 
-### Backend
-- Node.js with Express
-- TypeScript
-- MongoDB for database
-- CORS for cross-origin resource sharing
+### Frontend Technologies
+```
+├── React + TypeScript
+├── Vite (Build Tool)
+├── ShadCN UI (Component Library)
+├── React Hook Form + Zod
+├── Axios
+└── TailwindCSS
+```
 
-## Project Setup
+### Backend Technologies
+```
+├── Node.js + Express
+├── TypeScript
+├── MongoDB
+└── CORS
+```
 
-1. Clone the repository:
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16+)
+- pnpm
+- MongoDB account
+
+### Installation
+
+1. **Clone the repository**
 ```bash
 git clone git@github.com:sinanptm/Task-Management.git
 cd Task_Management
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 ```bash
 pnpm install
 ```
 
-3. Configure environment variables:
+3. **Configure environment variables**
 
-For client (client/.env):
+📁 For client (`client/.env`):
 ```env
 VITE_API_URL=http://localhost:8000
 ```
 
-For server (server/.env):
+📁 For server (`server/.env`):
 ```env
 PORT=8000
 MONGO_URI=mongodb+srv://yourmail:yourpassword@cluster0.8ysyzic.mongodb.net/Task_Management?retryWrites=true&w=majority&appName=Cluster0
 CLIENT_URL=http://localhost:3000
 ```
 
-4. Start both frontend and backend:
+4. **Start the development servers**
 ```bash
 pnpm dev
 ```
 
-Frontend will run on `http://localhost:3000` and backend on `http://localhost:8000`
+🌐 Frontend: [http://localhost:3000](http://localhost:3000)
+🔌 Backend: [http://localhost:8000](http://localhost:8000)
 
-## API Endpoints
+## 📡 API Endpoints
 
-- `GET /tasks` - Fetch all tasks
-- `POST /tasks` - Create a new task
-- `PUT /tasks/:id` - Update an existing task
-- `DELETE /tasks/:id` - Delete a task
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET    | /tasks   | Fetch all tasks |
+| POST   | /tasks   | Create a new task |
+| PUT    | /tasks/:id | Update an existing task |
+| DELETE | /tasks/:id | Delete a task |
 
-## Database Schema
+## 📊 Database Schema
 
 ```typescript
-{
+interface Task {
   id: string;
   name: string;
   description: string;
@@ -87,21 +108,32 @@ Frontend will run on `http://localhost:3000` and backend on `http://localhost:80
 }
 ```
 
-## Deployment
+## 🚀 Deployment
 
-- Frontend is deployed on Vercel
-- Backend is deployed on AWS with Nginx as reverse proxy
-- Custom domain implementation with subdomain configuration for backend (task.avm-ayurvedic.online)
-- Database is hosted on MongoDB Atlas
-- Note: Heroku deployment pending due to card verification issues (in progress)
+### Current Deployment Status
+- ✅ Frontend: Deployed on Vercel
+- ✅ Backend: AWS with Nginx reverse proxy
+- ✅ Database: MongoDB Atlas
+- ⏳ Heroku: Pending (card verification)
 
-## AI Tools Usage
+### Infrastructure
+```
+├── Frontend: Vercel
+├── Backend: AWS + Nginx
+├── Database: MongoDB Atlas
+└── Domain: Custom configuration with subdomain
+```
 
-During the development of this project, the following AI tools were utilized:
+## 🤖 AI Assistance & Tools
 
-- V0 AI: Used for generating styled components and UI design assistance
-- Claude AI: 
-  - Documentation generation and improvement
-  - Code quality analysis and review
-  - Technical documentation
+This project leveraged various AI tools for enhanced development:
+
+### V0 AI
+- 🎨 UI/UX design assistance
+- 🧩 Styled component generation
+
+### Claude AI
+- 📚 Documentation generation
+- 🔍 Code review and analysis
+- 📋 Technical writing
 
