@@ -1,5 +1,5 @@
 import { editTask } from "@/lib/api";
-import { TaskData } from "@/types";
+import { TaskData } from "@/types/ITask";
 import { useCallback, useState } from "react";
 
 export const useEditTask = () => {

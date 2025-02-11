@@ -1,22 +1,36 @@
-import { memo, useCallback, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, Plus, Calendar } from "lucide-react";
-import useGetTasks from "@/hooks/useGetTasks";
-import { type ITask, Priority, Status } from "@/types";
-import { useDeleteTask } from "@/hooks/useDeleteTask";
-import { toast } from "@/hooks/use-toast";
-import DialogForm from "./components/TaskFormDialog";
 import ConfirmDeleteDialog from "./components/ConfirmDeleteDialog";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { useDeleteTask } from "@/hooks/useDeleteTask";
+import DialogForm from "./components/TaskFormDialog";
+import { memo, useCallback, useState } from "react";
+import { ITask } from "./types/ITask";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import useGetTasks from "@/hooks/useGetTasks";
+import TaskList from "./components/TaskList";
+import { toast } from "@/hooks/use-toast";
+import TaskFilters from "./components/TaskFilters";
 
 const App = () => {
-  const { tasks, isLoading, error, setTasks } = useGetTasks();
+  const { tasks, isLoading, error, setTasks, filters, setFilters } = useGetTasks();
   const [editingTask, setEditingTask] = useState<ITask | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
   const { removeTask, isLoading: isDeleting } = useDeleteTask();
+
+  const handleFilterChange = useCallback((key: keyof typeof filters, value: string) => {
+    if (value === "all") {
+      value = '';
+    }
+    setFilters(prev => ({ ...prev, [key]: value }));
+  }, [setFilters]);
+
+  const clearFilters = useCallback(() => {
+    setFilters({
+      name: '',
+      priority: '',
+      status: ''
+    });
+  }, [setFilters]);
 
   const handleEdit = useCallback((task: ITask) => {
     setEditingTask(task);
@@ -27,7 +41,7 @@ const App = () => {
     async (taskId: string) => {
       try {
         await removeTask(taskId);
-        setTasks(tasks.filter((task) => task._id !== taskId));
+        setTasks(prevTasks => prevTasks.filter((task) => task._id !== taskId));
         toast({
           title: "Success",
           description: "Task deleted successfully",
@@ -42,7 +56,7 @@ const App = () => {
       }
       setDeleteTaskId(null);
     },
-    [removeTask, setTasks, tasks],
+    [removeTask, setTasks],
   );
 
   const handleAddTask = useCallback(() => {
@@ -52,89 +66,46 @@ const App = () => {
 
   const handleTaskSaved = useCallback(
     (updatedTask: ITask) => {
-      if (editingTask) {
-        setTasks(tasks.map((task) => (task._id === updatedTask._id ? updatedTask : task)));
-      } else {
-        setTasks([...tasks, updatedTask]);
-      }
+      setTasks(prevTasks => {
+        if (editingTask) {
+          return prevTasks.map((task) => (task._id === updatedTask._id ? updatedTask : task));
+        }
+        return [...prevTasks, updatedTask];
+      });
       setEditingTask(null);
       setIsDialogOpen(false);
     },
-    [setTasks, tasks, editingTask],
+    [setTasks, editingTask],
   );
 
-  const renderTaskList = useCallback(() => {
-    if (isLoading) {
-      return <div className="text-center py-8 text-muted-foreground">Loading tasks...</div>;
-    }
-
-    if (error) {
-      return <div className="text-center py-8 text-red-500">Error loading tasks: {error}</div>;
-    }
-
-    if (tasks.length === 0) {
-      return <div className="text-center py-8 text-muted-foreground">No tasks yet. Click 'Add Task' to create one.</div>;
-    }
-
-    return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {tasks.map((task) => (
-          <Card key={task._id} className="flex flex-col">
-            <CardContent className="flex-grow p-4">
-              <h2 className="text-lg font-semibold mb-2">{task.name}</h2>
-              <div className="flex justify-between items-center mb-2">
-                <Badge
-                  variant={
-                    task.priority === Priority.High
-                      ? "destructive"
-                      : task.priority === Priority.Medium
-                        ? "default"
-                        : "secondary"
-                  }
-                >
-                  {task.priority}
-                </Badge>
-                <Badge
-                  variant={
-                    task.status === Status.Completed
-                      ? "success"
-                      : task.status === Status.InProgress
-                        ? "warning"
-                        : "default"
-                  }
-                >
-                  {task.status}
-                </Badge>
-              </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Calendar className="mr-2 h-4 w-4" />
-                {new Date(task.createdAt!).toLocaleDateString()}
-              </div>
-            </CardContent>
-            <Separator />
-            <CardFooter className="flex justify-end space-x-2 p-4">
-              <Button variant="outline" size="sm" onClick={() => handleEdit(task)}>
-                <Pencil className="h-4 w-4 mr-2" /> Edit
-              </Button>
-              <Button variant="destructive" size="sm" onClick={() => setDeleteTaskId(task._id!)}>
-                <Trash2 className="h-4 w-4 mr-2" /> Delete
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-    );
-  }, [handleEdit, tasks, isLoading, error]);
+  const hasActiveFilters = Object.values(filters).some(value => value !== '');
 
   return (
-    <div className="container mx-auto p-4 ">
+    <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Task Manager</h1>
         <Button onClick={handleAddTask} size="sm">
           <Plus className="mr-2 h-4 w-4" /> Add Task
         </Button>
       </div>
-      {renderTaskList()}
+
+      <TaskFilters
+        clearFilters={clearFilters}
+        filters={filters}
+        handleFilterChange={handleFilterChange}
+        hasActiveFilters={hasActiveFilters}
+      />
+
+      <TaskList
+        clearFilters={clearFilters}
+        error={error!}
+        filters={filters}
+        handleEdit={handleEdit}
+        isLoading={isLoading}
+        tasks={tasks}
+        setDeleteTaskId={setDeleteTaskId}
+      />
+
       {isDialogOpen && (
         <DialogForm
           isOpen={isDialogOpen}
@@ -143,6 +114,7 @@ const App = () => {
           onSave={handleTaskSaved}
         />
       )}
+
       {deleteTaskId && (
         <ConfirmDeleteDialog
           deleteTaskId={deleteTaskId!}
@@ -155,5 +127,4 @@ const App = () => {
   );
 };
 
-export default memo(App)
-
+export default memo(App);

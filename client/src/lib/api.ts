@@ -1,5 +1,7 @@
 import { baseApiUrl } from '@/config';
-import TaskResponse, { ITask, TaskData } from '@/types';
+import TaskResponse from '@/types';
+import { TaskData } from "@/types/ITask";
+import { ITask } from "@/types/ITask";
 import axios from 'axios';
 
 const instance = axios.create({
@@ -9,8 +11,19 @@ const instance = axios.create({
     }
 });
 
-export const getTasks = async (): Promise<ITask[]> => {
-    const response = await instance.get("/");
+export const getTasks = async (filters?: {
+    name?: string;
+    priority?: string;
+    status?: string;
+}): Promise<ITask[]> => {
+    const params = new URLSearchParams();
+    
+    if (filters?.name) params.append('name', filters.name);
+    if (filters?.priority) params.append('priority', filters.priority);
+    if (filters?.status) params.append('status', filters.status);
+    
+    const query = params.toString() ? `?${params.toString()}` : '';
+    const response = await instance.get(`/${query}`);
     return response.data;
 };
 

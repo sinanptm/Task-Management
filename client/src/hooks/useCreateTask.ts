@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import {  TaskData } from '@/types';
+import { TaskData } from "@/types/ITask";
 import { createTasks } from '@/lib/api';
 
 export const useCreateTask = () => {

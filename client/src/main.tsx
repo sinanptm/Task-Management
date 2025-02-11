@@ -6,7 +6,7 @@ import { Toaster } from './components/ui/toaster.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <main className='bg-slate-300 h-screen'>
+    <main className='bg-slate-600 min-h-screen text-white'>
       <App />
       <Toaster />
     </main>
