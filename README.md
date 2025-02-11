@@ -34,61 +34,37 @@ A full-stack task management application built with React, TypeScript, Node.js, 
 
 ## Project Setup
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
-- MongoDB instance
-
-### Frontend Setup
-
-1. Clone the repository
-2. Navigate to the client directory:
+1. Clone the repository:
 ```bash
-cd client
-```
-
-3. Install dependencies:
-```bash
-npm install
-```
-
-4. Create a `.env` file in the client directory with:
-```
-VITE_API_URL=https://task.avm-ayurvedic.online
-```
-
-5. Run the development server:
-```bash
-npm run dev
-```
-
-The frontend will be available at `http://localhost:5173`
-
-### Backend Setup
-
-1. Navigate to the server directory:
-```bash
-cd server
+git clone git@github.com:sinanptm/Task-Management.git
+cd Task_Management
 ```
 
 2. Install dependencies:
 ```bash
-npm install
+pnpm install
 ```
 
-3. Create a `.env` file in the server directory with:
-```
-PORT=3000
-MONGODB_URI=your_mongodb_connection_string
-CORS_ORIGIN=https://task-management-sinanptms.vercel.app
+3. Configure environment variables:
+
+For client (client/.env):
+```env
+VITE_API_URL=http://localhost:8000
 ```
 
-4. Run the development server:
+For server (server/.env):
+```env
+PORT=8000
+MONGO_URI=mongodb+srv://yourmail:yourpassword@cluster0.8ysyzic.mongodb.net/Task_Management?retryWrites=true&w=majority&appName=Cluster0
+CLIENT_URL=http://localhost:3000
+```
+
+4. Start both frontend and backend:
 ```bash
-npm run dev
+pnpm dev
 ```
 
-The backend will be available at `http://localhost:3000`
+Frontend will run on `http://localhost:3000` and backend on `http://localhost:8000`
 
 ## API Endpoints
 
@@ -125,15 +101,3 @@ During the development of this project, AI tools were used to:
 - Help with ShadCN UI component implementation
 - Generate API endpoint documentation
 - Debug and optimize code
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the ISC License.
