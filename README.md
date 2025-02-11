@@ -90,14 +90,18 @@ Frontend will run on `http://localhost:3000` and backend on `http://localhost:80
 ## Deployment
 
 - Frontend is deployed on Vercel
-- Backend is deployed on AWS
+- Backend is deployed on AWS with Nginx as reverse proxy
+- Custom domain implementation with subdomain configuration for backend (task.avm-ayurvedic.online)
 - Database is hosted on MongoDB Atlas
+- Note: Heroku deployment pending due to card verification issues (in progress)
 
 ## AI Tools Usage
 
-During the development of this project, AI tools were used to:
-- Generate initial project boilerplate
-- Create TypeScript interfaces and type definitions
-- Help with ShadCN UI component implementation
-- Generate API endpoint documentation
-- Debug and optimize code
+During the development of this project, the following AI tools were utilized:
+
+- V0 AI: Used for generating styled components and UI design assistance
+- Claude AI: 
+  - Documentation generation and improvement
+  - Code quality analysis and review
+  - Technical documentation
+
