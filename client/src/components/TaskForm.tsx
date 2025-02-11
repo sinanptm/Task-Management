@@ -1,5 +1,3 @@
-"use client";
-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { type ITask, Priority, Status, type TaskData, TaskFormProps } from "@/types";
@@ -43,7 +41,7 @@ const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
     }
   }, [createError, updateError]);
 
-  const onSubmit =useCallback( async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
       let savedTask: ITask;
@@ -62,7 +60,7 @@ const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  },[updateTask, createNewTask, onSave, task]);
+  }, [updateTask, createNewTask, onSave, task]);
 
   return (
     <Form {...form}>

@@ -1,4 +1,4 @@
-import {  memo } from "react";
+import { memo } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
 import { ConfirmDeleteProps } from "@/types";
 
