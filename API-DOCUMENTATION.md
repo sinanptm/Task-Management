@@ -28,7 +28,7 @@ All responses are returned in JSON format with the following structure:
 ### Error Response
 ```json
 {
-  "error": "Error message"
+  "message": "Error message"
 }
 ```
 
@@ -48,8 +48,16 @@ Retrieves a list of all tasks.
 
 **Request**
 ```http
-GET /tasks
+GET /tasks?name=<string>&priority=<Low|Medium|High>&status=<To Do|In Progress|Completed>
 ```
+
+### Query Parameters
+
+| Parameter | Type   | Description |
+|-----------|--------|-------------|
+| name      | string | Filters tasks by name (case-insensitive, supports partial matches). |
+| priority  | string | Filters tasks by priority (`Low`, `Medium`, `High`). |
+| status    | string | Filters tasks by status (`To Do`, `In Progress`, `Completed`). |
 
 **Response**
 ```json

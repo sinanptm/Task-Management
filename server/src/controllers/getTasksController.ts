@@ -6,7 +6,6 @@ const getTaskController = async (req: Request, res: Response, next: NextFunction
     try {
         const { name, priority, status } = req.query;
         
-        // Build filter object
         const filter: any = {};
         
         if (name) {
