@@ -81,7 +81,7 @@ const App = () => {
         {tasks.map((task) => (
           <Card key={task._id} className="flex flex-col">
             <CardContent className="flex-grow p-4">
-              <h3 className="text-lg font-semibold mb-2">{task.name}</h3>
+              <h2 className="text-lg font-semibold mb-2">{task.name}</h2>
               <div className="flex justify-between items-center mb-2">
                 <Badge
                   variant={
