@@ -46,9 +46,9 @@ A modern, full-stack task management application built with React, TypeScript, N
 
 ### Prerequisites
 
-- Node.js (v16+)
+- Node.js (v22+)
 - pnpm
-- MongoDB account
+- MongoDB Atlas account
 
 ### Installation
 
