@@ -1,29 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { type ITask, Priority, Status, type TaskData, TaskFormProps } from "@/types";
+import { useState, useEffect, memo, useCallback } from "react";
 import { useCreateTask } from "@/hooks/useCreateTask";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEditTask } from "@/hooks/useEditTask";
-import { type ITask, Priority, Status, type TaskData } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(1, "Task name is required"),
   priority: z.nativeEnum(Priority),
   status: z.nativeEnum(Status),
 });
-
-interface TaskFormProps {
-  task?: ITask;
-  onSave: (task: ITask) => void;
-  onCancel: () => void;
-}
 
 const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
   const { createNewTask, error: createError } = useCreateTask();
@@ -49,7 +43,7 @@ const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
     }
   }, [createError, updateError]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit =useCallback( async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
       let savedTask: ITask;
@@ -68,7 +62,7 @@ const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  },[updateTask, createNewTask, onSave, task]);
 
   return (
     <Form {...form}>
@@ -147,4 +141,4 @@ const TaskForm = ({ task, onSave, onCancel }: TaskFormProps) => {
   );
 };
 
-export default TaskForm;
+export default memo(TaskForm);

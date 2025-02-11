@@ -1,14 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
+import {  memo } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "./ui/alert-dialog";
+import { ConfirmDeleteProps } from "@/types";
 
-type Props = {
-    deleteTaskId: string;
-    isDeleting: boolean;
-    handleDelete: (deleteTaskId: string)=>void;
-    setDeleteTaskId: Dispatch<SetStateAction<string | null>>;
-};
 
-const ConfirmDeleteDialog = ({ deleteTaskId, handleDelete, isDeleting, setDeleteTaskId }: Props) => {
+const ConfirmDeleteDialog = ({ deleteTaskId, handleDelete, isDeleting, setDeleteTaskId }: ConfirmDeleteProps) => {
     return (
         <AlertDialog open={!!deleteTaskId} onOpenChange={() => setDeleteTaskId(null)}>
             <AlertDialogContent>
@@ -32,4 +27,4 @@ const ConfirmDeleteDialog = ({ deleteTaskId, handleDelete, isDeleting, setDelete
     );
 };
 
-export default ConfirmDeleteDialog;
+export default memo(ConfirmDeleteDialog);

@@ -2,14 +2,8 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import TaskForm from "./TaskForm"
-import { ITask } from "@/types"
-
-interface DialogFormProps {
-  isOpen: boolean
-  onClose: () => void
-  task?: ITask
-  onSave: (task: ITask) => void
-}
+import { DialogFormProps } from "@/types"
+import { memo } from "react";
 
 const DialogForm = ({ isOpen, onClose, task, onSave }: DialogFormProps) => {
   return (
@@ -31,4 +25,4 @@ const DialogForm = ({ isOpen, onClose, task, onSave }: DialogFormProps) => {
   )
 }
 
-export default DialogForm
+export default memo(DialogForm)

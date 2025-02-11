@@ -15,6 +15,7 @@ const useGetTasks = () => {
                 const fetchedTasks = await getTasks();
                                 
                 setTasks(fetchedTasks);
+                //eslint-disable-next-line
             } catch (error: any) {
                 setError(error.response?.data?.message || "Unknown error occurred");
             } finally {

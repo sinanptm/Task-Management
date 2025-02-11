@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -12,22 +12,19 @@ import { toast } from "@/hooks/use-toast";
 import DialogForm from "./components/TaskFormDialog";
 import ConfirmDeleteDialog from "./components/ConfirmDeleteDialog";
 
-export default function TaskList() {
+const App = () => {
     const { tasks, isLoading, error, setTasks } = useGetTasks();
     const [editingTask, setEditingTask] = useState<ITask | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
     const { removeTask, isLoading: isDeleting } = useDeleteTask();
 
-    if (isLoading) return <div>Loading tasks...</div>;
-    if (error) return <div>Error: {error}</div>;
-
-    const handleEdit = (task: ITask) => {
+    const handleEdit =useCallback( (task: ITask) => {
         setEditingTask(task);
         setIsDialogOpen(true);
-    };
+    },[]);
 
-    const handleDelete = async (taskId: string) => {
+    const handleDelete = useCallback(async (taskId: string) => {
         try {
             await removeTask(taskId);
             setTasks(tasks.filter((task) => task._id !== taskId));
@@ -44,14 +41,14 @@ export default function TaskList() {
             });
         }
         setDeleteTaskId(null);
-    };
+    },[removeTask, setTasks, tasks ]);
 
-    const handleAddTask = () => {
+    const handleAddTask = useCallback(() => {
         setEditingTask(null);
         setIsDialogOpen(true);
-    };
+    },[]);
 
-    const handleTaskSaved = (updatedTask: ITask) => {
+    const handleTaskSaved = useCallback((updatedTask: ITask) => {
         if (editingTask) {
             setTasks(tasks.map((task) => (task._id === updatedTask._id ? updatedTask : task)));
         } else {
@@ -59,8 +56,11 @@ export default function TaskList() {
         }
         setEditingTask(null);
         setIsDialogOpen(false);
-    };
+    },[setTasks, tasks, editingTask]);
 
+    if (isLoading) return <div>Loading tasks...</div>;
+    if (error) return <div>Error: {error}</div>;
+    
     return (
         <div className="container mx-auto p-4">
             <div className="flex justify-between items-center mb-4">
@@ -146,3 +146,4 @@ export default function TaskList() {
     );
 }
 
+export default memo(App);

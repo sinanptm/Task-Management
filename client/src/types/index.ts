@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export enum Priority {
     Low = "Low",
     Medium = "Medium",
@@ -26,6 +28,26 @@ export type TaskData = {
 };
 
 export default interface TaskResponse {
-    message?:string;
-    task:ITask
+    message?: string;
+    task: ITask;
 }
+
+export interface TaskFormProps {
+    task?: ITask;
+    onSave: (task: ITask) => void;
+    onCancel: () => void;
+}
+
+export interface DialogFormProps {
+    isOpen: boolean;
+    onClose: () => void;
+    task?: ITask;
+    onSave: (task: ITask) => void;
+}
+
+export type ConfirmDeleteProps = {
+    deleteTaskId: string;
+    isDeleting: boolean;
+    handleDelete: (deleteTaskId: string)=>void;
+    setDeleteTaskId: Dispatch<SetStateAction<string | null>>;
+};
